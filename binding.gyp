@@ -15,12 +15,12 @@
                 'src/rtcsessiondescription.cc',
             ],
             'include_dirs' : [
-                'build/include',
+                'tmp/include',
                 'src',
                 '<!(node -e "require(\'nan\')")',
             ],
             'library_dirs': [
-                '../build/lib',
+                '../tmp/lib',
             ],
             'conditions': [
                 ['os_posix==1', {
@@ -77,7 +77,7 @@
                     ],
                     'link_settings': {
                         'libraries': [
-                            '-l../build/lib/webrtc.lib',
+                            '-l../tmp/lib/webrtc.lib',
                             '-lmsdmo.lib',
                             '-lwmcodecdspuuid.lib',
                             '-ldmoguids.lib',

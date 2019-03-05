@@ -32,9 +32,9 @@ function fetchModule() {
   const suffix = process.platform === 'win32' ? '.zip' : '.tar.gz';
 
   console.log(`Downloading ${moduleName}${suffix}...`);
-  download(`${PACKAGE_URL}/${PACKAGE_VERSION}/${moduleName}${suffix}`, 'build')
+  download(`${PACKAGE_URL}/${PACKAGE_VERSION}/${moduleName}${suffix}`, 'tmp')
     .then(function () {
-      extractPackage(`./build/${moduleName}${suffix}`);
+      extractPackage(`./tmp/${moduleName}${suffix}`);
     }).catch(function (err) {
       console.error('Failed, building the node module.');
       fetchLibWebRTC();
@@ -49,15 +49,15 @@ function fetchLibWebRTC() {
   const fileName = `libwebrtc-${version}-${platform}-${process.arch}`;
   const suffix = process.platform === 'win32' ? '.zip' : '.tar.gz';
 
-  if (fs.existsSync(`build/${fileName}${suffix}`)) {
-    extractPackage(`./build/${fileName}${suffix}`);
+  if (fs.existsSync(`tmp/${fileName}${suffix}`)) {
+    extractPackage(`./tmp/${fileName}${suffix}`);
     return;
   }
 
   console.log(`Downloading ${fileName}${suffix}...`);
-  download(`${url}/v${version}/${fileName}${suffix}`, 'build')
+  download(`${url}/v${version}/${fileName}${suffix}`, 'tmp')
     .then(function () {
-      extractPackage(`./build/${fileName}${suffix}`);
+      extractPackage(`./tmp/${fileName}${suffix}`);
     }).catch(function (err) {
       console.error('Failed.', err);
       process.exit(1);
@@ -75,7 +75,7 @@ function extractPackage(fileName) {
     plugins.push(require('decompress-targz')());
   }
 
-  decompress(fileName, 'build', {
+  decompress(fileName, 'tmp', {
     plugins: plugins
   }).then(() => {
     console.log('Done.');
